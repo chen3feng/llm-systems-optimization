@@ -5,6 +5,7 @@
 - [前言](book/00-front-matter/00-preface.md)
 - [阅读指南](book/00-front-matter/01-reading-guide.md)
 - [符号与术语约定](book/00-front-matter/02-notation.md)
+- [版权说明](book/00-front-matter/03-copyright.md)
 
 ## Part I — Foundations: Understanding LLM Computation
 
