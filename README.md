@@ -82,4 +82,13 @@ SUMMARY.md     全书导航
 
 ## 版权
 
-Copyright © 2026 chen3feng. All rights reserved.
+Copyright © 2026 chen3feng.
+
+本书正文、插图及仓库中的其他原创内容采用 [CC BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+（知识共享“署名—非商业性使用—禁止演绎”4.0 国际）许可协议发布：
+
+- **署名（BY）**：复制或分发时须注明作者 chen3feng 和本书名称，并附上许可协议链接；
+- **非商业性使用（NC）**：不得将本书内容用于商业目的；
+- **禁止演绎（ND）**：不得修改、翻译或改编本书内容，也不得基于本书创作衍生作品。
+
+完整法律文本见 [LICENSE](LICENSE)。如需商业使用、翻译或改编授权，请联系作者另行协商。
