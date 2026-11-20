@@ -9,10 +9,10 @@
 | 章 | 标题 | 级别 | 状态 |
 | --- | --- | --- | --- |
 | 12 | [Numerical Formats for LLMs](ch12-numerical-formats-for-llms.md) | TBD | draft |
-| 13 | [Quantization Fundamentals](ch13-quantization-fundamentals.md) | TBD | outline |
-| 14 | [Practical LLM Quantization](ch14-practical-llm-quantization.md) | TBD | outline |
-| 15 | [Compression Beyond Quantization](ch15-compression-beyond-quantization.md) | TBD | outline |
-| 16 | [Quantized and Compressed Runtime](ch16-quantized-and-compressed-runtime.md) | TBD | outline |
+| 13 | [Quantization Fundamentals](ch13-quantization-fundamentals.md) | TBD | draft |
+| 14 | [Practical LLM Quantization](ch14-practical-llm-quantization.md) | TBD | draft |
+| 15 | [Compression Beyond Quantization](ch15-compression-beyond-quantization.md) | TBD | draft |
+| 16 | [Quantized and Compressed Runtime](ch16-quantized-and-compressed-runtime.md) | TBD | draft |
 
 ## 本篇导言
 
