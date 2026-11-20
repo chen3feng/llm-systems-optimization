@@ -128,6 +128,10 @@ PP 训练的两个关键参数：
 
 PP 的通信量很小：stage 间只传 `B × S × h × 2` 的激活，8K、`h=8192` 时 128 MB，点对点传输，900 GB/s 下 0.14 ms。它的代价是气泡和激活显存——每个在途 microbatch 都要保留激活，1F1B 下同时驻留 `p` 个。
 
+![图 39-1](../../figures/part-07/ch39-pipeline-1f1b.svg)
+
+图 39-1　1F1B 调度：预热阶段各 stage 连续做前向，稳态阶段交替做最早 micro-batch 的反向和下一个前向，虚线框是气泡
+
 ## 39.7 Sequence and Context Parallel Training
 
 SP 和 CP 都切序列维，但目的不同。

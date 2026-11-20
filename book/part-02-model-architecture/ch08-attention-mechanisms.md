@@ -433,6 +433,10 @@ KV Cache 也不小。GQA、8K 时每请求 2.5 GiB，128K 时是 40 GiB。单卡
 
 评估长上下文时，不能只看 perplexity。要用 needle-in-a-haystack、多跳检索、长文档问答等任务，分位置、分长度地测。
 
+![图 8-1](../../figures/part-02/ch08-attention-variants.svg)
+
+图 8-1　四种结构的 KV Cache 开销：MHA 2.6 MB/token，MQA 40 KiB，GQA 320 KiB，MLA 约 69 KiB（70B、80 层、FP16）
+
 ## 8.9 Attention Computation and Memory Costs
 
 把前面的公式汇总。

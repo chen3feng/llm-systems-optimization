@@ -95,6 +95,37 @@ $$
 
 **树形投机**：草稿模型生成一棵树（每个节点多个候选），目标模型一次验证整棵树。验证时用树形 attention mask，一次前向验证多个路径。收益来自“一次前向验证多个候选”，代价是 KV Cache 要按树的结构组织，实现复杂。
 
+树形验证的实现难点在 mask 和接受判定，两者都是十几行：
+
+```python
+def build_tree_mask(parents):
+    """节点只能看到自己的祖先链。parents[i] 是节点 i 的父节点，
+    根为 -1（根的父节点是已确认前缀的最后一个位置）。"""
+    n = len(parents)
+    mask = torch.zeros(n, n, dtype=torch.bool)
+    for i in range(n):
+        j = parents[i]
+        while j != -1:
+            mask[i, j] = True          # 置位表示“可以看到”
+            j = parents[j]
+    return mask                        # 兄弟和后代保持 False，一次前向互不干扰
+
+def accept_path(candidates, target_logp, draft_logp, rng):
+    """沿一条祖先链逐节点验证。接受概率是 min(1, p_target / p_draft)；
+    第一个被拒的节点之后，整枝连同 KV 一起丢弃。"""
+    accepted = []
+    for i in candidates:
+        ratio = math.exp(target_logp[i] - draft_logp[i])
+        if rng.random() >= min(1.0, ratio):
+            break
+        accepted.append(i)
+    return accepted
+```
+
+![图 48-1](../../figures/part-10/ch48-speculative-tree.svg)
+
+图 48-1　树形投机：草稿模型生成一棵候选树，目标模型用树形 mask 一次验证所有路径，接受最长的一致前缀再加一个 bonus token
+
 **前瞻解码**（lookahead decoding）：不用草稿模型，用 Jacobi 迭代同时猜测多个位置，再验证。它不需要额外模型，但收敛慢，实际加速比通常低于 1.5 倍。
 
 **Medusa / EAGLE**：在目标模型上训练额外的解码头或特征层。EAGLE 在特征层预测，比 token 层的草稿更准，接受率能到 70%–80%。

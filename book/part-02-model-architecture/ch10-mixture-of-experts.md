@@ -250,6 +250,10 @@ GPU 0: token -> GPU 5 (expert 42)
 
 融合减少中间张量的 HBM 往返。decode 时每个 token 的 hidden 只有几 KB，但来回搬几次也会累积成可观的带宽。
 
+![图 10-1](../../figures/part-02/ch10-moe-routing.svg)
+
+图 10-1　MoE 路由：每个 token 只激活 8 个专家中的 2 个，专家输出按门控权重加权求和
+
 ## 10.6 Expert Load Balancing
 
 没有约束的话，路由器会塌缩：少数专家被大多数 token 选中，其余专家收不到梯度，逐渐退化。

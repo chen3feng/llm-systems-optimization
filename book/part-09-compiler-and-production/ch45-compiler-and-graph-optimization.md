@@ -155,6 +155,10 @@ Dynamo 捕获 FX 图
   → Triton 代码生成 或 extern kernel 调用
 ```
 
+![图 45-1](../../figures/part-09/ch45-compiler-pipeline.svg)
+
+图 45-1　`torch.compile` 的编译流水线：矩阵乘交给 cuBLAS，elementwise 链交给 Triton；图断裂会把整段退回 eager
+
 **Dynamo** 负责从 eager 代码里捕获图。它在 Python 字节码层面拦截，遇到无法追踪的控制流就“图断裂”（graph break），把这一段退回 eager 执行。图断裂是性能杀手：每断一次，前后的融合机会就少一批。
 
 **Inductor** 的核心是调度器。它把 FX 图切成 `SchedulerNode`，按读写依赖决定哪些能融合成一个 Triton kernel，然后生成：

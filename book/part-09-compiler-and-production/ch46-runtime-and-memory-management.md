@@ -53,6 +53,30 @@ lab:
 
 **固定大小 slab** 更适合推理引擎。KV Cache 的块大小是固定的（16 或 32 token），用 slab 分配器，每个块的位置可以用一个索引表示，分配就是从一个空闲队列里弹出一个 ID，开销在纳秒级。vLLM 的 block table 就是这样工作的。
 
+一个最小可用的实现只有十几行，关键在引用计数：
+
+```cpp
+// 固定 16 token 一块的 KV slab；alloc/release 都在调度器的关键路径上，必须无锁或极短临界区
+struct BlockPool {
+  std::vector<int32_t> free_list;   // 空闲块编号，栈式分配，天然有局部性
+  std::vector<int32_t> ref_count;   // prefix 共享时一块被多个序列引用
+
+  int32_t alloc() {
+    if (free_list.empty()) return -1;     // 交给调度器决定排队还是抢占
+    int32_t id = free_list.back();
+    free_list.pop_back();
+    ref_count[id] = 1;
+    return id;
+  }
+
+  void release(int32_t id) {
+    if (--ref_count[id] == 0) free_list.push_back(id);
+  }
+};
+```
+
+注意 `alloc()` 返回 `-1` 而不是抛异常：显存耗尽是正常状态，调度器要能在没有块的情况下继续服务已经在跑的请求。
+
 **`cudaMallocAsync`** 是 CUDA 11.2 引入的流序分配器：分配和释放在 stream 上排队，由驱动管理物理页。它的好处是不需要框架自己维护池，释放的内存能真正还给系统；坏处是分配仍然要走驱动，且跨 stream 复用的语义微妙。
 
 选择的标准很直接：**分配频率高、大小固定，用 slab；大小多变、生命周期不一，用缓存池；需要在多个进程间共享或动态伸缩，才考虑 `cudaMallocAsync`**。
@@ -70,6 +94,10 @@ lab:
 | 激活与临时 buffer | 40 GB | prefill 的大 batch 峰值 |
 | CUDA context 与库 workspace | 20 GB | cuBLAS、cuDNN、NCCL |
 | 预留 | 40 GB | 碎片和峰值余量 |
+
+![图 46-1](../../figures/part-09/ch46-memory-pools.svg)
+
+图 46-1　单机 8×H100 部署 70B 的显存划分：KV Cache 占一半以上，它决定了并发上限
 
 这个划分决定了服务的并发上限。KV Cache 400 GB 是硬上限：按每 token 320 KiB 算，能同时容纳约 128 万个 token；一个 8K 上下文的请求占 2.6 GB，也就是约 150 个并发请求。超过这个数，调度器必须排队或抢占。
 

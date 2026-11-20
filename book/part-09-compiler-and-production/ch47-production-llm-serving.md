@@ -27,6 +27,10 @@ lab:
 支撑服务        tokenizer、日志、计费、特征与缓存
 ```
 
+![图 47-1](../../figures/part-09/ch47-serving-architecture.svg)
+
+图 47-1　生产级 LLM 服务的四层结构：接入网关不感知模型，调度层决定去向，实例内部再分 API server、调度器和 GPU worker
+
 **接入网关**处理通用问题：证书、限流、鉴权、请求体大小限制。它不感知模型，只做转发和准入。
 
 **调度/路由层**决定请求去哪个模型、哪个实例。它需要知道每个实例的负载、prefix cache 的分布、以及请求的优先级。
@@ -50,6 +54,27 @@ API 层面最重要的设计是**流式输出**：用 SSE 或 WebSocket 把 toke
 | prefill | 计算 prompt 的 KV | 抢占、重算 |
 | decode | 逐 token 生成 | 抢占、重算 |
 | 结束 | flush、计费、日志 | 补记 |
+
+生命周期的状态机落到代码上，每个 decode 步要做两件事：
+
+```python
+def tick(engine, queue, now):
+    """每个 decode 步调用一次：先回收，再准入。顺序不能反。"""
+    # 1. 回收：取消的请求必须立刻归还 KV 块，不能等它生成完
+    for req in list(engine.running):
+        if req.cancelled or req.generated >= req.max_tokens:
+            engine.kv.release(req)
+            engine.running.remove(req)
+
+    # 2. 准入：按优先级出队，已经超过截止时间的直接拒绝，不要让它进 batch
+    while engine.has_free_slot() and len(queue) > 0:
+        req = queue.pop()
+        if req.deadline < now:
+            engine.metrics.reject(req, reason="timeout")
+            continue
+        engine.kv.allocate(req)
+        engine.running.append(req)
+```
 
 几个容易做错的点：
 

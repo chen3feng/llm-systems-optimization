@@ -414,6 +414,10 @@ $$
 
 **优化的本质，就是把算术强度推到脊点以上，或者把带宽压力降下来。**
 
+![图 3-1](../../figures/part-01/ch03-roofline-model.svg)
+
+图 3-1　Roofline 模型：横轴是算术强度，纵轴是可达性能；缓坡是带宽上限，平台是算力上限，交点 295 FLOP/byte 就是拐点
+
 ## 3.9 Communication Complexity
 
 多卡之后，通信成为新的瓶颈。
@@ -497,6 +501,28 @@ $$
 $$
 
 如果吞吐做到 10,000 token/s，成本降到约 0.67 美元/百万 token。**吞吐每提高一倍，单位成本就减半。**
+
+把前面几节串起来，就是一段可以复用的估算代码：
+
+```python
+def estimate(n_params, n_layers, n_kv_heads, d_head, seq_len, batch,
+             peak_flops=989e12, bandwidth=3.35e12, bytes_per_param=2):
+    """给一组模型参数，返回权重字节数、decode/prefill 的时间下限和算术强度。"""
+    weights = n_params * bytes_per_param
+    kv_per_token = 2 * n_layers * n_kv_heads * d_head * bytes_per_param
+
+    # decode：权重和全部请求的 KV 都要从 HBM 读一遍
+    decode_floor = (weights + batch * seq_len * kv_per_token) / bandwidth
+
+    # prefill：2·N·S·B 的 FLOPs 除以峰值算力
+    prefill_floor = 2 * n_params * seq_len * batch / peak_flops
+
+    # 算术强度：高于脊点算力受限，低于脊点带宽受限
+    intensity = 2 * n_params * batch / (weights + batch * seq_len * kv_per_token)
+    return weights, decode_floor, prefill_floor, intensity
+```
+
+调用 `estimate(70e9, 80, 8, 128, 8192, 1)` 得到权重 140 GB、decode 下限 42.6 ms、prefill 下限 1.16 秒、算术强度约 1，和前面手算的结果一致。改一个参数就能看到它对结论的影响，这比记住公式有用。
 
 ### 容量规划
 

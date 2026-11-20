@@ -139,6 +139,10 @@ def scheduler_loop(engine):
 
 调度器本身必须快。一轮 `T_iter` 是几十毫秒，调度逻辑的 CPU 时间应控制在 1 ms 以内；在 Python 里遍历上万个请求、做复杂的打分，会直接吃掉 GPU 的空闲窗口。
 
+![图 29-1](../../figures/part-05/ch29-continuous-batching.svg)
+
+图 29-1　静态批处理与连续批处理：静态批的槽位要等最慢的请求结束，连续批每一步重新组 batch，完成的请求立刻让出槽位
+
 ## 29.5 Chunked Prefill
 
 以 8 卡 TP 部署、聚合有效算力 3 PFLOPS 为例，一个 8K token 的 prefill 中，线性层约 `2 × 70e9 × 8192 ≈ 1.15 PFLOP`，attention 约 88 TFLOP，合计约 1.24 PFLOP，需要约 410 ms。如果它独占一轮，所有正在 decode 的请求都要停 410 ms，TPOT 从 40 ms 跳到 450 ms，交互体验立刻崩掉。

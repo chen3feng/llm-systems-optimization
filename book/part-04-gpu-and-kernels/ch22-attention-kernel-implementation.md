@@ -262,6 +262,10 @@ IO 复杂度从 `Θ(S²d + S²)` 降到 `Θ(S²d²/M)`，`M` 是片上存储容�
 
 FLOPs 没变，甚至因为 online softmax 的 rescale 略多一点。收益全部来自访存。
 
+![图 22-1](../../figures/part-04/ch22-flash-attention-loop.svg)
+
+图 22-1　FlashAttention 的双层循环：外层遍历 Q 块，内层遍历 K/V 块并维护在线 softmax 状态，`S×S` 从不落进 HBM
+
 ## 22.6 Causal Attention Kernel
 
 自回归模型的 attention 是 causal 的：第 `i` 个 query 只能看到 `0..i` 的 key。

@@ -101,6 +101,10 @@ NCCL 的集合通信可以被捕获，但要求 communicator 已初始化、rank
 
 decode 的 all-reduce 数据量随 batch 线性增长：batch 32 时 512 KB，传输时间约 0.6 μs，延迟仍占主导。TP 对 batch 的扩展性较好，直到 all-reduce 带宽成为瓶颈。
 
+![图 35-1](../../figures/part-06/ch35-tp-allreduce.svg)
+
+图 35-1　张量并行的一次前向：列并行切输出、行并行切输入，只在块边界做一次 all-reduce（每层 2 次，每次每卡 16 KB）
+
 ## 35.3 Pipeline Parallel Inference
 
 ### 流水线填充

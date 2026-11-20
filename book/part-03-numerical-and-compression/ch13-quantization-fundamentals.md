@@ -200,6 +200,34 @@ $$
 
 量化得到 `q = [-76, 127, 17, -44]`，反量化得到 `[-0.0311, 0.0520, 0.00696, -0.0180]`。最大误差是半个 step（`2.05e-4`）。均匀量化的误差方差是 `s²/12`。
 
+![图 13-1](../../figures/part-03/ch13-affine-quantization.svg)
+
+图 13-1　仿射量化：缩放因子 s 决定分辨率，零点 z 决定表示范围落在实数轴的哪一段
+
+分组量化的实现只有十几行，难的是分组大小和 scale 的计算方式：
+
+```python
+def quantize_groupwise(w, group_size=128, bits=4):
+    """w: [out_features, in_features] 的 FP16 权重，按行分组做对称量化。"""
+    qmax = 2 ** (bits - 1) - 1                 # 4 bit 对称：7
+    rows, cols = w.shape
+    wg = w.reshape(rows, cols // group_size, group_size)
+
+    # 每个 group 一个 scale，离群值只会撑大自己那一组
+    scale = wg.abs().amax(dim=-1, keepdim=True) / qmax
+    scale = scale.clamp(min=1e-8)              # 全零 group 的除零保护
+
+    q = torch.clamp(torch.round(wg / scale), -qmax - 1, qmax).to(torch.int8)
+    return q.reshape(rows, cols), scale.squeeze(-1)   # scale: [rows, cols // group_size]
+
+def dequantize(q, scale, group_size=128):
+    rows, cols = q.shape
+    qg = q.reshape(rows, cols // group_size, group_size).float()
+    return (qg * scale.unsqueeze(-1)).reshape(rows, cols)
+```
+
+这里的 `q` 用 int8 存，实际部署会把两个 4 bit 值打包进一个字节，把权重压到 0.5 字节/参数；打包和解包在 kernel 里做，代码多几行，访存量少一半。
+
 ### Clipping
 
 min/max 对离群值没有抵抗力。激活最大值是 20、99.9 分位数是 4.0 时：

@@ -207,6 +207,10 @@ struct SequenceKV {
 
 decode 时所有请求的块表被拼成一个 `[B, max_blocks]` 的 int32 张量，配合 `context_lens` 一起传给 attention kernel。padding 到 `max_blocks` 会浪费一些显存，8K 上下文、batch 128 时是 `128 × 512 × 4 B = 256 KiB`，仍然可以忽略。
 
+![图 26-1](../../figures/part-05/ch26-paged-kv-layout.svg)
+
+图 26-1　块表把逻辑位置映射到物理块：块可以不连续，相同前缀的块被多个序列共享，引用计数归零才回收
+
 ## 26.8 Prefix Sharing
 
 块表是间接层，间接层意味着两个序列可以指向同一个物理块。相同的前缀只需要存一份。

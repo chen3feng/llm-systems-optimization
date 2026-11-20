@@ -317,6 +317,10 @@ DP=1
 - 跨节点：PP=2，每个 stage TP=4，总 8 卡；stage 间传激活，通信量小；
 - 推理若要更高吞吐：再加 DP 副本，每个副本独立 TP=8。
 
+![图 34-1](../../figures/part-06/ch34-parallelism-layout.svg)
+
+图 34-1　64 卡的混合并行布局：TP 组放在 NVLink 域内，PP 组跨节点只传激活，DP 组每步同步一次梯度
+
 ## 34.8 Parallelism Strategy Selection
 
 | 策略 | 切分维度 | 显存收益 | 通信 | 适用 |

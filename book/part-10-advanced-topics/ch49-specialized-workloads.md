@@ -64,6 +64,24 @@ Agent 把一次问答变成多轮“思考—调用工具—观察结果”的�
 允许：{ ", a-z, 0-9, _ }   ← 其他 token 的 logit 置为 -inf
 ```
 
+```python
+def allowed_mask(fsm, vocab, state):
+    """当前状态下每个 token 是否合法。判据是“消费这些字节后语法仍成立”，
+    而不是字节相等——一个 token 常常跨多个语法位置（例如 {"a 一次进入两级）。"""
+    if state not in fsm.cache:                 # 每个状态的掩码只算一次
+        fsm.cache[state] = torch.tensor(
+            [fsm.can_consume(state, raw) for raw in vocab.bytes], dtype=torch.bool)
+    return fsm.cache[state]
+
+def constrained_step(logits, mask):
+    if not mask.any():                         # schema 与模型输出无法调和
+        raise ConstraintViolation()            # 明确失败，好过悄悄输出非法 JSON
+    logits = logits.masked_fill(~mask, float("-inf"))
+    return torch.multinomial(torch.softmax(logits, -1), 1)
+```
+
+词表 12.8 万时，一个状态的掩码要遍历全表，缓存的收益很大；这也是为什么 schema 相同的请求应该共享同一个 FSM 实例。
+
 工程上的难点有三个：
 
 - **token 与字符不对齐**：一个 token 可能跨越多个语法位置，比如 `{"a` 是一个 token，进入了两个状态。需要用 tokenizer 的字节映射预先计算每个 token 的合法后继；

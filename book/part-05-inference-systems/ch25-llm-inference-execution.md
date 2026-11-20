@@ -218,6 +218,10 @@ batch 256 需要 666 GB KV 加上 140 GB 权重，超过 8 张卡 640 GB 的总�
 
 这张表也解释了静态批处理为什么浪费：固定 batch 里最短的请求结束后，它的槽位要等到整批结束才能释放，KV 和算力一起空转。连续批处理把等待时间从“整批”降到“一步”，代价是每步都要重新组织 block table 和 attention 的元数据。
 
+![图 25-1](../../figures/part-05/ch25-prefill-decode.svg)
+
+图 25-1　同一个模型的两种负载：prefill 240 ms 里 83% 是线性层，decode 13 ms 里权重读取只占 5.2 ms，其余是 CPU 侧开销
+
 ## 25.8 Prefill and Decode Performance Characteristics
 
 把两阶段放在同一张表里，差异一目了然：

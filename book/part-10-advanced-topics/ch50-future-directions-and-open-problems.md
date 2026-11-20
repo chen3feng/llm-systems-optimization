@@ -49,6 +49,29 @@ GPU 不是唯一的选择。几类加速器在不同维度上做了不同的取�
 
 从 roofline 的角度看，这些架构的差异本质上是**算术强度的工作点不同**。GPU 的算力/带宽比大约 300 FLOP/byte（H100：989 TFLOPS / 3.35 TB/s）；LLM decode 的算术强度只有 1–2 FLOP/byte，远在拐点左侧，所以任何提高带宽或降低精度的方案都直接有效。
 
+![图 50-1](../../figures/part-10/ch50-roofline-shift.svg)
+
+图 50-1　三代 GPU 的 Roofline：算力翻了几倍，带宽只翻了一倍，拐点从 200 右移到 500，decode 的工作点几乎没动
+
+判断一个算子或一个模型落在哪一侧，只需要两个数：
+
+```python
+def roofline(intensity, peak_flops=989e12, bandwidth=3.35e12):
+    """intensity: FLOP/byte。返回可达性能和受限类型。"""
+    bound = "算力受限" if intensity > peak_flops / bandwidth else "带宽受限"
+    return min(peak_flops, bandwidth * intensity), bound
+
+for name, i in [("prefill 8K", 8000), ("decode B=1", 1), ("decode B=128", 38)]:
+    perf, bound = roofline(i)
+    print(f"{name:12s} 强度 {i:6.1f}  {bound}  {perf / 1e12:7.1f} TFLOPS")
+
+# prefill 8K    强度 8000.0  算力受限   989.0 TFLOPS
+# decode B=1    强度    1.0  带宽受限     3.4 TFLOPS
+# decode B=128  强度   38.0  带宽受限   127.3 TFLOPS
+```
+
+`decode B=128` 的强度比 `B=1` 高 38 倍，但仍然只有拐点的八分之一——这就是为什么低精度和 KV 压缩在一代代硬件上都有效：它们改的是带宽，而带宽是 decode 唯一的天花板。
+
 Groq 这类确定性架构的思路是：既然 decode 是访存受限，那就把访存做成完全可预测的，用巨大的片上 SRAM 和静态调度消除不确定性。代价是容量小（几百 MB），模型必须放片外，靠极高的带宽拉回来。
 
 对本书的读者来说，重要的不是记住这些型号，而是理解：**LLM 推理的瓶颈在带宽，任何在带宽上做文章的架构都有机会**。

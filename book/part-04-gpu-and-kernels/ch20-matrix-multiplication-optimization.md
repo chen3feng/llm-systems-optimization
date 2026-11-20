@@ -167,6 +167,10 @@ for t:
 
 配合 `cp.async`，加载和计算可以重叠。这是所有高性能 GEMM 的标配。
 
+![图 20-1](../../figures/part-04/ch20-gemm-tiling.svg)
+
+图 20-1　GEMM 的三级分块：HBM → shared memory → 寄存器，每一级只搬下一级需要的那一块
+
 ## 20.5 Register Tiling
 
 每个线程只算一个输出，寄存器复用太少。让每个线程算 8×8 个输出：

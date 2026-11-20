@@ -81,6 +81,18 @@ $$
 
 推导的起点是“最优策略对应一个隐式奖励”：把 BT 模型里的奖励用策略与参考策略的对数比表示，代回损失就得到上式。`β` 控制偏离参考策略的强度，通常取 0.1–0.5：太小约束不够，策略会跑远；太大偏保守，学不到偏好。
 
+落到代码上，四个对数概率一减就完了：
+
+```python
+def dpo_loss(logp_w, logp_l, ref_logp_w, ref_logp_l, beta=0.1):
+    """四个入参都是序列的对数概率 log π(y|x)，形状 [batch]。
+    chosen 相对参考模型要涨，rejected 要跌，两者的差越大损失越小。"""
+    margin = beta * ((logp_w - ref_logp_w) - (logp_l - ref_logp_l))
+    return -F.logsigmoid(margin)                       # -log σ(β·Δ)
+```
+
+`logp_w`、`logp_l` 是 chosen 和 rejected 整条序列的 logprob 之和，只在回答 token 上累加，prompt 部分要 mask 掉——否则 prompt 越长，logprob 越负，β 的有效作用会被稀释。
+
 DPO 的工程优势很明显：
 
 - 只需要策略模型和参考模型（参考模型只做前向），不需要奖励模型和 critic；
@@ -114,6 +126,17 @@ PPO 的显存账单很重：同时需要策略、参考、奖励、critic 四个
 $$
 A_i = \frac{r_i - \text{mean}(r_1, \ldots, r_G)}{\text{std}(r_1, \ldots, r_G)}
 $$
+
+```python
+def grpo_advantage(rewards):
+    """rewards: [G]，同一个 prompt 的 G 个回答的奖励。
+    用组均值代替 critic 的基线，组内标准差做尺度归一化。"""
+    rewards = torch.as_tensor(rewards, dtype=torch.float32)
+    std = rewards.std(unbiased=False)
+    if std < 1e-6:
+        return torch.zeros_like(rewards)    # 全对或全错：这组不产生梯度
+    return (rewards - rewards.mean()) / std
+```
 
 这样省掉了价值网络及其优化器状态，显存和实现复杂度都下降。代价是每个 prompt 要多采样几条（`G` 通常 4–16），生成成本上升。7B 模型、`G=8`、每 prompt 1,000 token，样本生成量是单条采样的 8 倍——省下的显存换成了 GPU 时间。
 
@@ -171,6 +194,10 @@ Rollout 集群（推理引擎，vLLM/SGLang）
    ↓ 采样请求
 奖励服务（奖励模型或验证器）
 ```
+
+![图 43-1](../../figures/part-08/ch43-rl-rollout-arch.svg)
+
+图 43-1　分离式 rollout：训练集群推权重给推理引擎，样本经奖励服务打分后回流训练步，权重同步每步一次
 
 关键设计点：
 
