@@ -10,7 +10,7 @@
 | --- | --- | --- | --- |
 | 7 | [Transformer Architecture in Practice](ch07-transformer-architecture-in-practice.md) | TBD | draft |
 | 8 | [Attention Mechanisms](ch08-attention-mechanisms.md) | TBD | draft |
-| 9 | [Modern Attention Architectures](ch09-modern-attention-architectures.md) | TBD | outline |
+| 9 | [Modern Attention Architectures](ch09-modern-attention-architectures.md) | TBD | draft |
 | 10 | [Mixture of Experts](ch10-mixture-of-experts.md) | TBD | outline |
 | 11 | [Alternative and Hybrid Architectures](ch11-alternative-and-hybrid-architectures.md) | TBD | outline |
 
