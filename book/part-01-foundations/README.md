@@ -11,9 +11,9 @@
 | 1 | [Introduction to LLM Systems](ch01-introduction-to-llm-systems.md) | TBD | draft |
 | 2 | [Transformer Computation Model](ch02-transformer-computation-model.md) | TBD | draft |
 | 3 | [Computational Complexity and Cost Modeling](ch03-computational-complexity-and-cost-modeling.md) | Core | draft |
-| 4 | [Modern Computer Architecture for LLMs](ch04-modern-computer-architecture-for-llms.md) | TBD | outline |
-| 5 | [Performance Modeling and Analysis](ch05-performance-modeling-and-analysis.md) | TBD | outline |
-| 6 | [Profiling and Debugging](ch06-profiling-and-debugging.md) | TBD | outline |
+| 4 | [Modern Computer Architecture for LLMs](ch04-modern-computer-architecture-for-llms.md) | TBD | draft |
+| 5 | [Performance Modeling and Analysis](ch05-performance-modeling-and-analysis.md) | TBD | draft |
+| 6 | [Profiling and Debugging](ch06-profiling-and-debugging.md) | TBD | draft |
 
 ## 本篇导言
 
