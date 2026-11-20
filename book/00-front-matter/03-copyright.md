@@ -15,6 +15,8 @@ Algorithms, GPU Kernels, Runtime and Distributed Execution
 
 商业使用、翻译、改编或再版，需取得作者书面授权。
 
+书中的代码示例（C++/CUDA/Python 片段）是例外：可以自由使用、修改和分发，包括在商业项目中使用，不受上述条件限制，方便时注明出处即可。配套代码仓库 `llm-systems-lab` 以其自身的许可证为准。
+
 书中引用的论文与开源项目，版权归各自作者所有，按其各自的许可使用。
 
 ## 许可协议全文
