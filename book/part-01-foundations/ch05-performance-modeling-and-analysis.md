@@ -105,7 +105,7 @@ $$
 I = \frac{4 \times 64 \times S \times 128}{2 \times 8 \times S \times 128 \times 2} = 8 \text{ FLOP/byte}
 $$
 
-GQA 让 64 个 Query 头共享 8 组 KV，强度从 1 提到了 8。但 8 仍然远低于 295，所以 decode attention 是带宽受限的。batch 增大到 `B` 时强度变成 `8B`，要到 batch 37 才可能进入算力受限区——而那时 KV 显存早就爆了。
+GQA 让 64 个 Query 头共享 8 组 KV，强度从 1 提到了 8。但 8 仍然远低于 295，所以 decode attention 是带宽受限的。增大 batch 不会改变这个强度：每个请求有自己的 KV，FLOPs 和读取字节同比例增长。只有继续减少 KV 头数（MQA）才能把强度推高，而 64 仍然低于脊点。
 
 ### 多级 roofline
 

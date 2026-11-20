@@ -4,7 +4,7 @@
 
 一本约 800 页、以 C++/CUDA 为主要实践语言、以 LLM 底层系统为核心的技术专著。
 
-> 当前状态：撰写中。Part I（Chapter 1–6）与 Chapter 7 初稿已完成，其余章节为 skeleton。
+> 当前状态：撰写中。Part I（Chapter 1–6）与 Chapter 7–8 初稿已完成，其余章节为 skeleton。
 
 ## 这本书回答什么问题
 
