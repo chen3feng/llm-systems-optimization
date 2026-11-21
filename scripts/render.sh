@@ -26,6 +26,7 @@ rm -rf .build/src
 mkdir -p .build/src/theme
 cp -R book figures .build/src/
 cp -R theme/katex .build/src/theme/
+cp assets/cover/cover.png .build/src/cover.png
 cp SUMMARY.md LICENSE .build/src/
 
 python3 -I scripts/prepare_src.py .build/src
@@ -53,6 +54,7 @@ output = "mathml"
 no-css = true
 
 [output.epub]
+cover-image = "cover.png"
 TOML
 
 mdbook build .build/epub

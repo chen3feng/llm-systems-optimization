@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>Cover 01 — Roofline</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 1800px; overflow: hidden; }
+  body {
+    background: radial-gradient(1100px 900px at 72% 18%, #182a44 0%, #0b1424 52%, #060a11 100%);
+    color: #eaf2ff;
+    font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(120, 170, 230, .07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120, 170, 230, .07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    -webkit-mask-image: radial-gradient(900px 760px at 50% 42%, #000 25%, transparent 100%);
+    mask-image: radial-gradient(900px 760px at 50% 42%, #000 25%, transparent 100%);
+  }
+  .frame { position: absolute; inset: 64px; border: 1px solid rgba(140, 180, 230, .16); }
+  .content { position: absolute; inset: 112px 118px 104px; display: flex; flex-direction: column; }
+  .kicker {
+    font: 500 17px/1 "SF Mono", Menlo, monospace;
+    letter-spacing: .3em; color: #7fa6cc; text-transform: uppercase;
+  }
+  .title { margin-top: 88px; font-weight: 700; letter-spacing: -.025em; }
+  .title .l1 { font-size: 196px; line-height: .84; }
+  .title .l2 { font-size: 90px; line-height: 1.04; letter-spacing: .005em; }
+  .zh {
+    margin-top: 36px; font-family: "PingFang SC", sans-serif;
+    font-size: 54px; font-weight: 500; letter-spacing: .24em; color: #cfe4ff;
+  }
+  .en-sub {
+    margin-top: 24px; max-width: 920px;
+    font: 400 19px/1.6 "SF Mono", Menlo, monospace;
+    letter-spacing: .13em; color: #8aa3bd; text-transform: uppercase;
+  }
+  .chart { margin-top: 90px; margin-bottom: auto; }
+  .chart svg { display: block; width: 100%; height: auto; }
+  .foot {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font: 400 19px/1.4 "SF Mono", Menlo, monospace; color: #7d94ad; letter-spacing: .08em;
+  }
+  .foot .author { color: #eaf2ff; font-size: 25px; letter-spacing: .04em; }
+</style>
+<div class="grid"></div>
+<div class="frame"></div>
+<div class="content">
+  <div class="kicker">A Systems Book · 2026</div>
+  <div class="title">
+    <div class="l1">LLM</div>
+    <div class="l2">SYSTEMS</div>
+    <div class="l2">OPTIMIZATION</div>
+  </div>
+  <div class="zh">LLM 系统优化</div>
+  <div class="en-sub">Algorithms · GPU Kernels · Runtime · Distributed Execution</div>
+
+  <div class="chart">
+    <svg viewBox="0 0 980 500" role="img" aria-label="Roofline model">
+      <defs>
+        <linearGradient id="slope" x1="0" y1="1" x2="1" y2="0">
+          <stop offset="0" stop-color="#2b6cff"/>
+          <stop offset="1" stop-color="#4de1ff"/>
+        </linearGradient>
+        <filter id="glow" filterUnits="userSpaceOnUse" x="0" y="0" width="980" height="500">
+          <feGaussianBlur stdDeviation="7" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- axes -->
+      <path d="M70 440 H940" stroke="rgba(150,190,230,.28)" stroke-width="1.5"/>
+      <path d="M70 440 V34" stroke="rgba(150,190,230,.28)" stroke-width="1.5"/>
+      <path d="M70 370 H940 M70 300 H940 M70 230 H940 M70 160 H940 M70 90 H940"
+            stroke="rgba(150,190,230,.08)" stroke-width="1"/>
+      <path d="M250 440 V34 M430 440 V34 M610 440 V34 M790 440 V34"
+            stroke="rgba(150,190,230,.08)" stroke-width="1"/>
+
+      <!-- roofline -->
+      <path d="M70 440 L522 160" stroke="url(#slope)" stroke-width="6" fill="none" filter="url(#glow)"/>
+      <path d="M522 160 H930" stroke="#ffb454" stroke-width="6" fill="none" filter="url(#glow)"/>
+      <path d="M522 160 V440" stroke="rgba(255,180,84,.5)" stroke-width="1.5" stroke-dasharray="5 7"/>
+      <circle cx="522" cy="160" r="9" fill="#fff"/>
+      <circle cx="330" cy="279" r="5" fill="#4de1ff"/>
+      <circle cx="742" cy="160" r="5" fill="#ffb454"/>
+
+      <text x="86" y="480" font-family="SF Mono, Menlo, monospace" font-size="15"
+            letter-spacing="2.2" fill="#7d94ad">ARITHMETIC INTENSITY →</text>
+      <text x="522" y="480" text-anchor="middle" font-family="SF Mono, Menlo, monospace"
+            font-size="14" letter-spacing="1.6" fill="#c98d3c">RIDGE POINT</text>
+      <text x="300" y="224" text-anchor="middle" font-family="SF Mono, Menlo, monospace"
+            font-size="15" letter-spacing="2" fill="#6f9fc9">MEMORY BOUND</text>
+      <text x="748" y="134" text-anchor="middle" font-family="SF Mono, Menlo, monospace"
+            font-size="15" letter-spacing="2" fill="#d9a05a">COMPUTE BOUND</text>
+      <text transform="translate(34 250) rotate(-90)" text-anchor="middle"
+            font-family="SF Mono, Menlo, monospace" font-size="15" letter-spacing="2.4"
+            fill="#7d94ad">PERFORMANCE</text>
+    </svg>
+  </div>
+
+  <div class="foot">
+    <div class="author">chen3feng</div>
+    <div>ALGORITHMS · KERNELS · RUNTIME · DISTRIBUTION</div>
+  </div>
+</div>
+</html>

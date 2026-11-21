@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>Cover 03 — Layers</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 1800px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(1000px 700px at 30% 12%, #fbf8f1 0%, #f3eee3 55%, #ebe4d6 100%);
+    color: #1d1a16;
+    font-family: Georgia, "Times New Roman", "Songti SC", serif;
+  }
+  .frame { position: absolute; inset: 64px; border: 1px solid rgba(120, 105, 80, .28); }
+  .content { position: absolute; inset: 112px 118px 104px; display: flex; flex-direction: column; }
+  .kicker {
+    font: 500 17px/1 "SF Mono", Menlo, monospace;
+    letter-spacing: .3em; color: #8a7c66; text-transform: uppercase;
+  }
+  .title { margin-top: 66px; }
+  .title .l1 { font-size: 92px; line-height: 1.02; letter-spacing: -.015em; }
+  .title .l2 { font-size: 92px; line-height: 1.02; letter-spacing: -.015em; font-style: italic; color: #2f5d57; }
+  .zh {
+    margin-top: 30px; font-family: "Songti SC", "STSong", serif;
+    font-size: 50px; letter-spacing: .3em; color: #3a332a;
+  }
+  .en-sub {
+    margin-top: 22px;
+    font: 400 18px/1.6 "SF Mono", Menlo, monospace;
+    letter-spacing: .12em; color: #8a7c66; text-transform: uppercase;
+  }
+  .stack { margin-top: auto; margin-bottom: 34px; }
+  .stack svg { display: block; width: 100%; height: auto; }
+  .foot {
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font: 400 18px/1.4 "SF Mono", Menlo, monospace; color: #7d715f; letter-spacing: .08em;
+  }
+  .foot .author { font-family: Georgia, serif; font-size: 26px; color: #1d1a16; letter-spacing: .04em; }
+</style>
+<div class="frame"></div>
+<div class="content">
+  <div class="kicker">A Systems Book · 2026</div>
+  <div class="title">
+    <div class="l1">LLM Systems</div>
+    <div class="l2">Optimization</div>
+  </div>
+  <div class="zh">LLM 系统优化</div>
+  <div class="en-sub">Algorithms · GPU Kernels · Runtime · Distributed Execution</div>
+
+  <div class="stack">
+    <svg viewBox="0 0 1000 660" role="img" aria-label="System layers">
+      <!-- distributed -->
+      <g>
+        <polygon points="430,320 770,430 430,540 90,430" fill="#d8cdb8"/>
+        <polygon points="90,430 430,540 430,574 90,464" fill="#c6b9a0"/>
+        <polygon points="430,540 770,430 770,464 430,574" fill="#b8aa90"/>
+      </g>
+      <!-- runtime -->
+      <g>
+        <polygon points="430,210 770,320 430,430 90,320" fill="#b9c8bd"/>
+        <polygon points="90,320 430,430 430,464 90,354" fill="#a3b5a8"/>
+        <polygon points="430,430 770,320 770,354 430,464" fill="#93a598"/>
+      </g>
+      <!-- kernels -->
+      <g>
+        <polygon points="430,100 770,210 430,320 90,210" fill="#6f9a8d"/>
+        <polygon points="90,210 430,320 430,354 90,244" fill="#5c877a"/>
+        <polygon points="430,320 770,210 770,244 430,354" fill="#4f786c"/>
+      </g>
+      <!-- model -->
+      <g>
+        <polygon points="430,-10 770,100 430,210 90,100" fill="#2f5d57"/>
+        <polygon points="90,100 430,210 430,244 90,134" fill="#274e49"/>
+        <polygon points="430,210 770,100 770,134 430,244" fill="#20423d"/>
+      </g>
+
+      <!-- labels -->
+      <g font-family="SF Mono, Menlo, monospace" font-size="16" letter-spacing="2.2" fill="#5c5346">
+        <path d="M780 100 H806" stroke="#9c907b" stroke-width="1"/>
+        <text x="816" y="106">MODEL</text>
+        <text x="816" y="130" font-family="Songti SC, serif" font-size="16" letter-spacing="1"
+              fill="#8a7c66">模型</text>
+
+        <path d="M780 210 H806" stroke="#9c907b" stroke-width="1"/>
+        <text x="816" y="216">KERNELS</text>
+        <text x="816" y="240" font-family="Songti SC, serif" font-size="16" letter-spacing="1"
+              fill="#8a7c66">算子</text>
+
+        <path d="M780 320 H806" stroke="#9c907b" stroke-width="1"/>
+        <text x="816" y="326">RUNTIME</text>
+        <text x="816" y="350" font-family="Songti SC, serif" font-size="16" letter-spacing="1"
+              fill="#8a7c66">运行时</text>
+
+        <path d="M780 430 H806" stroke="#9c907b" stroke-width="1"/>
+        <text x="816" y="436">DISTRIBUTED</text>
+        <text x="816" y="460" font-family="Songti SC, serif" font-size="16" letter-spacing="1"
+              fill="#8a7c66">分布式</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="foot">
+    <div class="author">chen3feng</div>
+    <div>算法 · GPU KERNEL · 运行时 · 分布式执行</div>
+  </div>
+</div>
+</html>

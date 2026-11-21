@@ -95,24 +95,26 @@ open .build/html/index.html
 脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX）。产物有两个：
 
 - `.build/html/`：网页版，KaTeX 的样式和字体放在 `theme/katex/`，不依赖 CDN；
-- `.build/llm-systems-optimization.epub`：电子书版，公式用 MathML 渲染，适配不加载 KaTeX 资源的阅读器。
+- `.build/llm-systems-optimization.epub`：电子书版，公式用 MathML 渲染，适配不加载 KaTeX 资源的阅读器，封面取自 `assets/cover/cover.png`。
 
 `.build/` 不入库；正文改动后重跑脚本。
 
 ### 导出 PDF
 
-需要本机安装 Chrome/Chromium：
+需要本机安装 Chrome/Chromium，以及 poppler 提供的 `pdfunite`（用于把封面页合并到正文前）：
 
 ```bash
+brew install --cask google-chrome
+brew install poppler
 python3 -I scripts/make_pdf.py
 ```
 
-脚本把 mdBook 生成的整本 `print.html` 注入打印样式后交给无头 Chrome，输出两个版本：
+脚本把 mdBook 生成的整本 `print.html` 注入打印样式后交给无头 Chrome，再把封面单独打印成一页并合并，输出两个版本：
 
 - `.build/llm-systems-optimization.pdf`：A4 普通版；
 - `.build/llm-systems-optimization-kindle.pdf`：6 寸 Kindle 大字版（91mm × 122mm，正文 12.5pt），`text` 代码块会按最大列宽自动缩放，避免 ASCII 示意图折行错位。
 
-PDF 使用系统字体和本地 KaTeX 资源渲染，不需要联网。
+PDF 使用系统字体和本地 KaTeX 资源渲染，不需要联网；第一页是整页出血的封面。
 
 构建后可以检查公式：
 
@@ -127,7 +129,7 @@ python3 -I scripts/check_math.py
 ```text
 book/          书稿正文：前置内容、10 个 Part、50 章、附录
 figures/       全书插图
-assets/        封面等非正文资源
+assets/        封面等非正文资源（最终封面在 assets/cover/）
 templates/     章节与 Part 模板
 theme/katex/   KaTeX 样式与字体（构建用）
 scripts/       HTML、EPUB、PDF 构建脚本

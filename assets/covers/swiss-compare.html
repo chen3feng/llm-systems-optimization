@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>04 Swiss 细化对比</title>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 40px 64px;
+    background: #ece9e2; color: #1d1a16;
+    font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  }
+  header { max-width: 1260px; margin: 0 auto 32px; }
+  h1 { margin: 0 0 8px; font-size: 26px; }
+  p { margin: 0; color: #6c6459; font-size: 14px; line-height: 1.7; }
+  .grid { max-width: 1260px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+  .card { background: #faf8f2; border-radius: 6px; padding: 16px 16px 20px;
+          box-shadow: 0 2px 12px rgba(60, 50, 30, .12); }
+  .card img { display: block; width: 100%; height: auto; border-radius: 3px; }
+  .label { margin-top: 16px; display: flex; align-items: baseline; gap: 10px; }
+  .num { font: 600 13px/1 "SF Mono", Menlo, monospace; color: #b0a695; }
+  .name { font-size: 18px; font-weight: 600; }
+  .desc { margin-top: 8px; color: #6c6459; font-size: 14px; line-height: 1.7; }
+  .tag { display: inline-block; margin-left: 8px; padding: 2px 8px; border-radius: 10px;
+         background: #e6532f; color: #fff; font-size: 12px; vertical-align: 2px; }
+</style>
+<header>
+  <h1>04 Swiss · 两个细化版本</h1>
+  <p>同一套版式，区别是中段是否加入书里的核心主张。其余候选方案（01–03）都保留在 covers 目录里。</p>
+</header>
+<div class="grid">
+  <div class="card">
+    <img src="04-swiss.png" alt="04 Swiss 纯留白版">
+    <div class="label"><span class="num">04</span><span class="name">Swiss · 纯留白</span></div>
+    <div class="desc">最克制，中段完全留白，靠巨大的字号和右侧竖排中文撑住版面。</div>
+  </div>
+  <div class="card">
+    <img src="04-swiss-tagline.png" alt="04b Swiss 题眼版">
+    <div class="label"><span class="num">04b</span><span class="name">Swiss · 题眼版</span><span class="tag">推荐</span></div>
+    <div class="desc">加入“先算清瓶颈，再优化。”与英文对照，补上中段空白，也把书的方法论放到封面上。</div>
+  </div>
+</div>
+</html>

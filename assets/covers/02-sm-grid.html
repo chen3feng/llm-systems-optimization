@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>Cover 02 — SM Grid</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 1800px; overflow: hidden; }
+  body {
+    background: radial-gradient(900px 900px at 78% 72%, #0e1a12 0%, #070b08 60%, #050806 100%);
+    color: #f1f7ef;
+    font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  }
+  .grid {
+    position: absolute; right: -90px; bottom: 40px; width: 900px; height: 900px;
+    background-image:
+      linear-gradient(rgba(130, 220, 150, .16) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(130, 220, 150, .16) 1px, transparent 1px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
+    mask-image: radial-gradient(closest-side, #000 35%, transparent 100%);
+    opacity: .8;
+  }
+  .cell {
+    position: absolute; width: 36px; height: 36px;
+    background: #9ee37d; box-shadow: 0 0 22px rgba(158, 227, 125, .55);
+  }
+  .c1 { left: 180px; top: 216px; opacity: .95; }
+  .c2 { left: 360px; top: 108px; opacity: .8; }
+  .c3 { left: 468px; top: 324px; opacity: .9; }
+  .c4 { left: 612px; top: 180px; opacity: .7; }
+  .c5 { left: 252px; top: 468px; opacity: .85; }
+  .c6 { left: 540px; top: 540px; opacity: .95; }
+  .c7 { left: 720px; top: 396px; opacity: .75; }
+  .c8 { left: 396px; top: 684px; opacity: .8; }
+  .c9 { left: 684px; top: 648px; opacity: .6; }
+  .c10 { left: 108px; top: 612px; opacity: .65; }
+  .frame { position: absolute; inset: 64px; border: 1px solid rgba(150, 220, 160, .14); }
+  .content { position: absolute; inset: 112px 118px 104px; display: flex; flex-direction: column; }
+  .kicker {
+    font: 500 17px/1 "SF Mono", Menlo, monospace;
+    letter-spacing: .3em; color: #7fb98c; text-transform: uppercase;
+  }
+  .title { margin-top: 120px; font-weight: 700; letter-spacing: -.03em; }
+  .title .l1 { font-size: 214px; line-height: .82; }
+  .title .l2 { font-size: 82px; line-height: 1.08; letter-spacing: .015em; color: #d7e5d6; }
+  .title .accent { color: #9ee37d; }
+  .rule { width: 210px; height: 4px; background: #9ee37d; margin-top: 54px; }
+  .zh {
+    margin-top: 42px; font-family: "PingFang SC", sans-serif;
+    font-size: 52px; font-weight: 500; letter-spacing: .26em; color: #d8ebd3;
+  }
+  .en-sub {
+    margin-top: 24px; max-width: 920px;
+    font: 400 18px/1.65 "SF Mono", Menlo, monospace;
+    letter-spacing: .12em; color: #8aa88f; text-transform: uppercase;
+  }
+  .foot {
+    margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end;
+    font: 400 18px/1.4 "SF Mono", Menlo, monospace; color: #7f9a85; letter-spacing: .1em;
+  }
+  .foot .author { color: #f1f7ef; font-size: 25px; letter-spacing: .04em; }
+</style>
+<div class="grid">
+  <div class="cell c1"></div><div class="cell c2"></div><div class="cell c3"></div>
+  <div class="cell c4"></div><div class="cell c5"></div><div class="cell c6"></div>
+  <div class="cell c7"></div><div class="cell c8"></div><div class="cell c9"></div>
+  <div class="cell c10"></div>
+</div>
+<div class="frame"></div>
+<div class="content">
+  <div class="kicker">A Systems Book · 2026</div>
+  <div class="title">
+    <div class="l1">LLM</div>
+    <div class="l2">SYSTEMS</div>
+    <div class="l2"><span class="accent">OPTIMIZATION</span></div>
+  </div>
+  <div class="rule"></div>
+  <div class="zh">LLM 系统优化</div>
+  <div class="en-sub">Algorithms · GPU Kernels · Runtime · Distributed Execution</div>
+  <div class="foot">
+    <div class="author">chen3feng</div>
+    <div>ALGORITHMS · KERNELS · RUNTIME · DISTRIBUTION</div>
+  </div>
+</div>
+</html>
