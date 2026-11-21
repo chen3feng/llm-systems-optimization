@@ -79,7 +79,7 @@
 open .build/html/index.html
 ```
 
-脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter 后交给 mdBook 渲染，产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
+脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter、转义公式里的 Markdown 特殊字符后交给 mdBook 渲染，产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
 
 ## 仓库结构
 

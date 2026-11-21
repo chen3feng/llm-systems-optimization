@@ -15,7 +15,7 @@ mkdir -p .build/src
 cp -R book figures .build/src/
 cp SUMMARY.md LICENSE .build/src/
 
-python3 -I scripts/strip_frontmatter.py .build/src
+python3 -I scripts/prepare_src.py .build/src
 mdbook build
 
 echo "HTML: $(pwd)/.build/html/index.html"
