@@ -18,8 +18,9 @@ if ! command -v mdbook-katex >/dev/null; then
 fi
 
 rm -rf .build/src
-mkdir -p .build/src
+mkdir -p .build/src/theme
 cp -R book figures .build/src/
+cp -R theme/katex .build/src/theme/
 cp SUMMARY.md LICENSE .build/src/
 
 python3 -I scripts/prepare_src.py .build/src

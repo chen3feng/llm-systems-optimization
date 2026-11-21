@@ -84,7 +84,7 @@ cargo install mdbook-katex
 open .build/html/index.html
 ```
 
-脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX），产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
+脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX），产物在 `.build/html/`。KaTeX 的样式和字体放在 `theme/katex/`，构建时一并复制，不依赖 CDN。`.build/` 不入库；正文改动后重跑脚本。
 
 构建后可以检查公式：
 
@@ -101,6 +101,7 @@ book/          书稿正文：前置内容、10 个 Part、50 章、附录
 figures/       全书插图
 assets/        封面等非正文资源
 templates/     章节与 Part 模板
+theme/katex/   KaTeX 样式与字体（构建用）
 scripts/       HTML 构建脚本
 book.toml      mdBook 配置
 SUMMARY.md     全书导航

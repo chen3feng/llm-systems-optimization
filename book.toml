@@ -11,9 +11,11 @@ create-missing = false
 
 [preprocessor.katex]
 after = ["links"]
+no-css = true
 
 [output.html]
 smart-punctuation = false
+additional-css = ["theme/katex/katex.min.css"]
 default-theme = "light"
 git-repository-url = "https://github.com/chen3feng/llm-systems-optimization"
 edit-url-template = "https://github.com/chen3feng/llm-systems-optimization/edit/main/{path}"
