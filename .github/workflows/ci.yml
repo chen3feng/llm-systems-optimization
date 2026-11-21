@@ -29,6 +29,9 @@ jobs:
       - name: Install mdbook-katex
         run: cargo install mdbook-katex
 
+      - name: Install mdbook-epub
+        run: cargo install mdbook-epub
+
       - name: Build book
         run: ./scripts/render.sh
 
@@ -40,6 +43,13 @@ jobs:
         with:
           name: book-html
           path: .build/html
+          retention-days: 7
+
+      - name: Upload EPUB
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-epub
+          path: .build/llm-systems-optimization.epub
           retention-days: 7
 
       - name: Upload Pages artifact
@@ -65,3 +75,25 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+  release:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download EPUB
+        uses: actions/download-artifact@v4
+        with:
+          name: book-epub
+          path: dist
+
+      - name: Publish latest release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: 最新书稿
+          body: 自动构建的最新 EPUB，每次合并到 main 后更新。
+          files: dist/llm-systems-optimization.epub
+          make_latest: true
