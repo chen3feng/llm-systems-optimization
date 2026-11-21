@@ -16,12 +16,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
+      # mdBook 没有维护中的 setup action，直接用官方预编译包；版本与本地保持一致
       - name: Install mdBook
-        uses: peaceiris/actions-mdbook@v2
-        with:
-          mdbook-version: latest
+        run: |
+          curl -fsSL https://github.com/rust-lang/mdBook/releases/download/v0.5.4/mdbook-v0.5.4-x86_64-unknown-linux-gnu.tar.gz \
+            | sudo tar -xz -C /usr/local/bin
 
       - name: Cache cargo
         uses: Swatinem/rust-cache@v2
@@ -45,21 +46,21 @@ jobs:
         run: python3 -I scripts/make_pdf.py
 
       - name: Upload HTML
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: book-html
           path: .build/html
           retention-days: 7
 
       - name: Upload EPUB
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: book-epub
           path: .build/llm-systems-optimization.epub
           retention-days: 7
 
       - name: Upload PDFs
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: book-pdf
           path: |
@@ -69,7 +70,7 @@ jobs:
 
       - name: Upload Pages artifact
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v5
         with:
           path: .build/html
 
@@ -89,7 +90,7 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
 
   release:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -99,19 +100,19 @@ jobs:
       contents: write
     steps:
       - name: Download EPUB
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: book-epub
           path: dist
 
       - name: Download PDFs
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           name: book-pdf
           path: dist
 
       - name: Publish latest release
-        uses: softprops/action-gh-release@v2
+        uses: softprops/action-gh-release@v3
         with:
           tag_name: latest
           name: 最新书稿
