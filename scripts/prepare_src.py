@@ -17,12 +17,20 @@ SPECIAL = '_*`[]<>|#'
 
 
 def protect_math(text):
-    """把公式里的 Markdown 特殊字符转义；解析后 Markdown 会把反斜杠去掉。"""
+    """把公式里的 Markdown 特殊字符转义；解析后 Markdown 会把反斜杠去掉。
+
+    行内公式改用 `\\(...\\)` 分隔：MathJax 2 的默认配置只认这种行内定界符，
+    `$...$` 不会被处理。这里多写一层反斜杠，是为了让 Markdown 解析后留下
+    真正的 `\\(`。
+    """
     def repl(match):
-        tex = match.group(0).replace('\\', '\\\\')
+        seg = match.group(0)
+        display = seg.startswith('$$')
+        tex = seg[2:-2] if display else seg[1:-1]
+        tex = tex.replace('\\', '\\\\')
         for ch in SPECIAL:
             tex = tex.replace(ch, '\\' + ch)
-        return tex
+        return ('$$' + tex + '$$') if display else ('\\\\(' + tex + '\\\\)')
 
     return MATH.sub(repl, text)
 
