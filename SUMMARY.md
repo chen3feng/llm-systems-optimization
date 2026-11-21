@@ -9,7 +9,7 @@
 
 ## Part I — Foundations: Understanding LLM Computation
 
-- [本篇导言](book/part-01-foundations/README.md)
+- [Part I — Foundations: Understanding LLM Computation](book/part-01-foundations/README.md)
 - [Chapter 1. Introduction to LLM Systems](book/part-01-foundations/ch01-introduction-to-llm-systems.md)
 - [Chapter 2. Transformer Computation Model](book/part-01-foundations/ch02-transformer-computation-model.md)
 - [Chapter 3. Computational Complexity and Cost Modeling](book/part-01-foundations/ch03-computational-complexity-and-cost-modeling.md)
@@ -19,7 +19,7 @@
 
 ## Part II — Model Architecture and Computation
 
-- [本篇导言](book/part-02-model-architecture/README.md)
+- [Part II — Model Architecture and Computation](book/part-02-model-architecture/README.md)
 - [Chapter 7. Transformer Architecture in Practice](book/part-02-model-architecture/ch07-transformer-architecture-in-practice.md)
 - [Chapter 8. Attention Mechanisms](book/part-02-model-architecture/ch08-attention-mechanisms.md)
 - [Chapter 9. Modern Attention Architectures](book/part-02-model-architecture/ch09-modern-attention-architectures.md)
@@ -28,7 +28,7 @@
 
 ## Part III — Numerical Optimization and Model Compression
 
-- [本篇导言](book/part-03-numerical-and-compression/README.md)
+- [Part III — Numerical Optimization and Model Compression](book/part-03-numerical-and-compression/README.md)
 - [Chapter 12. Numerical Formats for LLMs](book/part-03-numerical-and-compression/ch12-numerical-formats-for-llms.md)
 - [Chapter 13. Quantization Fundamentals](book/part-03-numerical-and-compression/ch13-quantization-fundamentals.md)
 - [Chapter 14. Practical LLM Quantization](book/part-03-numerical-and-compression/ch14-practical-llm-quantization.md)
@@ -37,7 +37,7 @@
 
 ## Part IV — GPU Computing and Kernel Optimization
 
-- [本篇导言](book/part-04-gpu-and-kernels/README.md)
+- [Part IV — GPU Computing and Kernel Optimization](book/part-04-gpu-and-kernels/README.md)
 - [Chapter 17. CUDA Programming Model](book/part-04-gpu-and-kernels/ch17-cuda-programming-model.md)
 - [Chapter 18. GPU Memory System](book/part-04-gpu-and-kernels/ch18-gpu-memory-system.md)
 - [Chapter 19. GPU Execution and Optimization](book/part-04-gpu-and-kernels/ch19-gpu-execution-and-optimization.md)
@@ -49,7 +49,7 @@
 
 ## Part V — LLM Inference Systems
 
-- [本篇导言](book/part-05-inference-systems/README.md)
+- [Part V — LLM Inference Systems](book/part-05-inference-systems/README.md)
 - [Chapter 25. LLM Inference Execution](book/part-05-inference-systems/ch25-llm-inference-execution.md)
 - [Chapter 26. KV Cache Architecture](book/part-05-inference-systems/ch26-kv-cache-architecture.md)
 - [Chapter 27. Advanced KV Cache Management](book/part-05-inference-systems/ch27-advanced-kv-cache-management.md)
@@ -60,7 +60,7 @@
 
 ## Part VI — Distributed LLM Systems
 
-- [本篇导言](book/part-06-distributed-systems/README.md)
+- [Part VI — Distributed LLM Systems](book/part-06-distributed-systems/README.md)
 - [Chapter 32. Distributed Computing Foundations](book/part-06-distributed-systems/ch32-distributed-computing-foundations.md)
 - [Chapter 33. Communication Primitives](book/part-06-distributed-systems/ch33-communication-primitives.md)
 - [Chapter 34. Model Parallelism](book/part-06-distributed-systems/ch34-model-parallelism.md)
@@ -69,7 +69,7 @@
 
 ## Part VII — LLM Training Systems
 
-- [本篇导言](book/part-07-training-systems/README.md)
+- [Part VII — LLM Training Systems](book/part-07-training-systems/README.md)
 - [Chapter 37. Training Execution Pipeline](book/part-07-training-systems/ch37-training-execution-pipeline.md)
 - [Chapter 38. Training Memory Optimization](book/part-07-training-systems/ch38-training-memory-optimization.md)
 - [Chapter 39. Distributed Training](book/part-07-training-systems/ch39-distributed-training.md)
@@ -77,7 +77,7 @@
 
 ## Part VIII — Post-training and Model Quality from a Systems Perspective
 
-- [本篇导言](book/part-08-post-training/README.md)
+- [Part VIII — Post-training and Model Quality from a Systems Perspective](book/part-08-post-training/README.md)
 - [Chapter 41. Data Engineering for LLMs](book/part-08-post-training/ch41-data-engineering-for-llms.md)
 - [Chapter 42. Supervised Fine-tuning](book/part-08-post-training/ch42-supervised-fine-tuning.md)
 - [Chapter 43. Preference Optimization and RL](book/part-08-post-training/ch43-preference-optimization-and-rl.md)
@@ -85,14 +85,14 @@
 
 ## Part IX — Compiler, Runtime and Production Serving
 
-- [本篇导言](book/part-09-compiler-and-production/README.md)
+- [Part IX — Compiler, Runtime and Production Serving](book/part-09-compiler-and-production/README.md)
 - [Chapter 45. Compiler and Graph Optimization](book/part-09-compiler-and-production/ch45-compiler-and-graph-optimization.md)
 - [Chapter 46. Runtime and Memory Management](book/part-09-compiler-and-production/ch46-runtime-and-memory-management.md)
 - [Chapter 47. Production LLM Serving](book/part-09-compiler-and-production/ch47-production-llm-serving.md)
 
 ## Part X — Advanced Topics and Research Directions
 
-- [本篇导言](book/part-10-advanced-topics/README.md)
+- [Part X — Advanced Topics and Research Directions](book/part-10-advanced-topics/README.md)
 - [Chapter 48. Advanced Inference Techniques](book/part-10-advanced-topics/ch48-advanced-inference-techniques.md)
 - [Chapter 49. Specialized Workloads](book/part-10-advanced-topics/ch49-specialized-workloads.md)
 - [Chapter 50. Future Directions and Open Problems](book/part-10-advanced-topics/ch50-future-directions-and-open-problems.md)
