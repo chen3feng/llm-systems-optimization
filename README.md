@@ -72,14 +72,27 @@
 
 ## 构建 HTML
 
-需要 [mdBook](https://rust-lang.github.io/mdBook/)（`brew install mdbook`）：
+需要 [mdBook](https://rust-lang.github.io/mdBook/) 和 [mdbook-katex](https://github.com/lzanini/mdbook-katex)：
+
+```bash
+brew install mdbook
+cargo install mdbook-katex
+```
 
 ```bash
 ./scripts/render.sh
 open .build/html/index.html
 ```
 
-脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter、转义公式里的 Markdown 特殊字符后交给 mdBook 渲染，产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
+脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX），产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
+
+构建后可以检查公式：
+
+```bash
+python3 -I scripts/check_math.py
+```
+
+它逐页比对源文件里的公式数量与渲染结果，并报告 KaTeX 解析错误。
 
 ## 仓库结构
 

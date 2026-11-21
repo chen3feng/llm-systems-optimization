@@ -9,8 +9,10 @@ src = ".build/src"
 build-dir = ".build/html"
 create-missing = false
 
+[preprocessor.katex]
+after = ["links"]
+
 [output.html]
-mathjax-support = true
 smart-punctuation = false
 default-theme = "light"
 git-repository-url = "https://github.com/chen3feng/llm-systems-optimization"

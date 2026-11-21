@@ -1,63 +1,18 @@
 #!/usr/bin/env python3
-"""装配 mdBook 源目录前的预处理。
+"""装配 mdBook 源目录前的预处理：删除章节开头的 YAML front matter。
 
-1. 删除章节开头的 YAML front matter——mdBook 不识别它，会把整块当正文渲染。
-2. 保护数学公式——mdBook 先做 Markdown 解析再交给 MathJax，公式里的 `_` 会被
-   解析成强调，`\\`、`\\,` 等反斜杠转义会被吞掉，MathJax 收到的是残缺的 TeX。
-   这里在解析前把公式里的特殊字符转义，Markdown 解析后它们会还原成原始字符。
+mdBook 不识别书稿使用的 `chapter:` / `part:` 等 front matter，会把整块当正文
+渲染，所以在装配 mdBook 源目录时统一去掉。
+
+公式不需要在这里处理：mdbook-katex 预处理器在 Markdown 解析前就把公式渲染成
+HTML，公式里的 `_`、`\\` 等不会再被 Markdown 语法干扰。
 """
 import pathlib
-import re
 import sys
-
-FENCE = re.compile(r'^ {0,3}(`{3,}|~{3,})[^\n]*\n.*?^ {0,3}\1[ \t]*$', re.M | re.S)
-CODE_SPAN = re.compile(r'(`+)(?!`).*?(?<!`)\1(?!`)', re.S)
-MATH = re.compile(r'\$\$.+?\$\$|\$(?!\$)[^$\n]+?\$', re.S)
-SPECIAL = "_*`[]<>|#-+=:.^~'\""
-
-
-def protect_math(text):
-    """把公式里的 Markdown 特殊字符转义；解析后 Markdown 会把反斜杠去掉。
-
-    行内公式改用 `\\(...\\)` 分隔：MathJax 2 的默认配置只认这种行内定界符，
-    `$...$` 不会被处理。这里多写一层反斜杠，是为了让 Markdown 解析后留下
-    真正的 `\\(`。
-    """
-    def repl(match):
-        seg = match.group(0)
-        display = seg.startswith('$$')
-        tex = seg[2:-2] if display else seg[1:-1]
-        tex = tex.replace('\\', '\\\\')
-        for ch in SPECIAL:
-            tex = tex.replace(ch, '\\' + ch)
-        return ('$$' + tex + '$$') if display else ('\\\\(' + tex + '\\\\)')
-
-    return MATH.sub(repl, text)
-
-
-def protect_segment(text):
-    """处理一段非代码块文本，跳过其中的行内代码。"""
-    out, pos = [], 0
-    for match in CODE_SPAN.finditer(text):
-        out.append(protect_math(text[pos:match.start()]))
-        out.append(match.group(0))
-        pos = match.end()
-    out.append(protect_math(text[pos:]))
-    return ''.join(out)
-
-
-def transform(text):
-    """按围栏代码块切分，只处理代码块以外的内容。"""
-    out, pos = [], 0
-    for match in FENCE.finditer(text):
-        out.append(protect_segment(text[pos:match.start()]))
-        out.append(match.group(0))
-        pos = match.end()
-    out.append(protect_segment(text[pos:]))
-    return ''.join(out)
 
 
 def strip_front_matter(text):
+    """去掉文件开头的 `--- ... ---` 块，返回 (新文本, 是否命中)。"""
     lines = text.splitlines(keepends=True)
     if lines and lines[0].strip() == '---':
         for i in range(1, len(lines)):
@@ -72,7 +27,7 @@ def main(root):
     for path in root.rglob('*.md'):
         text, had = strip_front_matter(path.read_text(encoding='utf-8'))
         stripped += had
-        path.write_text(transform(text), encoding='utf-8')
+        path.write_text(text, encoding='utf-8')
     print(f'stripped front matter: {stripped} files')
 
 

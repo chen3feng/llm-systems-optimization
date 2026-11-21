@@ -5,8 +5,15 @@ set -euo pipefail
 
 cd "$(dirname "$0")/.."
 
+# mdbook-katex 通常由 cargo 安装到这里
+export PATH="$HOME/.cargo/bin:$PATH"
+
 if ! command -v mdbook >/dev/null; then
   echo "需要先安装 mdBook：brew install mdbook" >&2
+  exit 1
+fi
+if ! command -v mdbook-katex >/dev/null; then
+  echo "需要先安装 mdbook-katex：cargo install mdbook-katex" >&2
   exit 1
 fi
 
