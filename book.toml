@@ -1,0 +1,19 @@
+[book]
+title = "LLM Systems Optimization"
+authors = ["chen3feng"]
+description = "Algorithms, GPU Kernels, Runtime and Distributed Execution"
+language = "zh-CN"
+src = ".build/src"
+
+[build]
+build-dir = ".build/html"
+create-missing = false
+
+[output.html]
+mathjax-support = true
+default-theme = "light"
+git-repository-url = "https://github.com/chen3feng/llm-systems-optimization"
+edit-url-template = "https://github.com/chen3feng/llm-systems-optimization/edit/main/{path}"
+
+[output.html.search]
+enable = true

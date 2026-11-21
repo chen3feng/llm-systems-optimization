@@ -70,6 +70,17 @@
 - 章节文件使用 `chNN-kebab-case-title.md` 命名，编号与全书目录一致。
 - 图片集中存放在 [figures/](figures/)，正文使用相对路径引用。
 
+## 构建 HTML
+
+需要 [mdBook](https://rust-lang.github.io/mdBook/)（`brew install mdbook`）：
+
+```bash
+./scripts/render.sh
+open .build/html/index.html
+```
+
+脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter 后交给 mdBook 渲染，产物在 `.build/html/`。`.build/` 不入库；正文改动后重跑脚本。
+
 ## 仓库结构
 
 ```text
@@ -77,6 +88,8 @@ book/          书稿正文：前置内容、10 个 Part、50 章、附录
 figures/       全书插图
 assets/        封面等非正文资源
 templates/     章节与 Part 模板
+scripts/       HTML 构建脚本
+book.toml      mdBook 配置
 SUMMARY.md     全书导航
 ```
 
