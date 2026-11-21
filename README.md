@@ -8,6 +8,9 @@
 
 EPUB 下载：<https://github.com/chen3feng/llm-systems-optimization/releases/latest/download/llm-systems-optimization.epub>（每次合并到 main 后更新）
 
+PDF 下载：[A4 普通版](https://github.com/chen3feng/llm-systems-optimization/releases/latest/download/llm-systems-optimization.pdf) ·
+[6 寸 Kindle 大字版](https://github.com/chen3feng/llm-systems-optimization/releases/latest/download/llm-systems-optimization-kindle.pdf)
+
 > 当前状态：初稿完成。Part I–Part X 共 50 章、前言与附录 A–I 均已完成初稿，待统一审校。
 
 ## 这本书回答什么问题
@@ -74,7 +77,7 @@ EPUB 下载：<https://github.com/chen3feng/llm-systems-optimization/releases/la
 - 章节文件使用 `chNN-kebab-case-title.md` 命名，编号与全书目录一致。
 - 图片集中存放在 [figures/](figures/)，正文使用相对路径引用。
 
-## 构建 HTML 与 EPUB
+## 构建 HTML、EPUB 与 PDF
 
 需要 [mdBook](https://rust-lang.github.io/mdBook/)、[mdbook-katex](https://github.com/lzanini/mdbook-katex) 和 [mdbook-epub](https://github.com/Michael-F-Bryan/mdbook-epub)：
 
@@ -96,6 +99,21 @@ open .build/html/index.html
 
 `.build/` 不入库；正文改动后重跑脚本。
 
+### 导出 PDF
+
+需要本机安装 Chrome/Chromium：
+
+```bash
+python3 -I scripts/make_pdf.py
+```
+
+脚本把 mdBook 生成的整本 `print.html` 注入打印样式后交给无头 Chrome，输出两个版本：
+
+- `.build/llm-systems-optimization.pdf`：A4 普通版；
+- `.build/llm-systems-optimization-kindle.pdf`：6 寸 Kindle 大字版（91mm × 122mm，正文 12.5pt），`text` 代码块会按最大列宽自动缩放，避免 ASCII 示意图折行错位。
+
+PDF 使用系统字体和本地 KaTeX 资源渲染，不需要联网。
+
 构建后可以检查公式：
 
 ```bash
@@ -112,7 +130,7 @@ figures/       全书插图
 assets/        封面等非正文资源
 templates/     章节与 Part 模板
 theme/katex/   KaTeX 样式与字体（构建用）
-scripts/       HTML 构建脚本
+scripts/       HTML、EPUB、PDF 构建脚本
 book.toml      mdBook 配置
 SUMMARY.md     全书导航
 ```

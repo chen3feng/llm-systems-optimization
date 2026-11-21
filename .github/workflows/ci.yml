@@ -38,6 +38,12 @@ jobs:
       - name: Check formulas
         run: python3 -I scripts/check_math.py
 
+      - name: Install CJK fonts
+        run: sudo apt-get update && sudo apt-get install -y fonts-noto-cjk
+
+      - name: Build PDFs
+        run: python3 -I scripts/make_pdf.py
+
       - name: Upload HTML
         uses: actions/upload-artifact@v4
         with:
@@ -50,6 +56,15 @@ jobs:
         with:
           name: book-epub
           path: .build/llm-systems-optimization.epub
+          retention-days: 7
+
+      - name: Upload PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: book-pdf
+          path: |
+            .build/llm-systems-optimization.pdf
+            .build/llm-systems-optimization-kindle.pdf
           retention-days: 7
 
       - name: Upload Pages artifact
@@ -89,11 +104,20 @@ jobs:
           name: book-epub
           path: dist
 
+      - name: Download PDFs
+        uses: actions/download-artifact@v4
+        with:
+          name: book-pdf
+          path: dist
+
       - name: Publish latest release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
           name: 最新书稿
-          body: 自动构建的最新 EPUB，每次合并到 main 后更新。
-          files: dist/llm-systems-optimization.epub
+          body: 自动构建的最新 EPUB 与 PDF（A4 普通版、6 寸 Kindle 大字版），每次合并到 main 后更新。
+          files: |
+            dist/llm-systems-optimization.epub
+            dist/llm-systems-optimization.pdf
+            dist/llm-systems-optimization-kindle.pdf
           make_latest: true
