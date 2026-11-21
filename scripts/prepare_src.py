@@ -13,7 +13,7 @@ import sys
 FENCE = re.compile(r'^ {0,3}(`{3,}|~{3,})[^\n]*\n.*?^ {0,3}\1[ \t]*$', re.M | re.S)
 CODE_SPAN = re.compile(r'(`+)(?!`).*?(?<!`)\1(?!`)', re.S)
 MATH = re.compile(r'\$\$.+?\$\$|\$(?!\$)[^$\n]+?\$', re.S)
-SPECIAL = '_*`[]<>|#'
+SPECIAL = "_*`[]<>|#-+=:.^~'\""
 
 
 def protect_math(text):

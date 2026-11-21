@@ -11,6 +11,7 @@ create-missing = false
 
 [output.html]
 mathjax-support = true
+smart-punctuation = false
 default-theme = "light"
 git-repository-url = "https://github.com/chen3feng/llm-systems-optimization"
 edit-url-template = "https://github.com/chen3feng/llm-systems-optimization/edit/main/{path}"
