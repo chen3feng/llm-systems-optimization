@@ -6,6 +6,8 @@
 
 在线阅读：<https://blog.chen3feng.top/llm-systems-optimization/>
 
+EPUB 下载：<https://github.com/chen3feng/llm-systems-optimization/releases/latest/download/llm-systems-optimization.epub>（每次合并到 main 后更新）
+
 > 当前状态：初稿完成。Part I–Part X 共 50 章、前言与附录 A–I 均已完成初稿，待统一审校。
 
 ## 这本书回答什么问题
@@ -72,13 +74,14 @@
 - 章节文件使用 `chNN-kebab-case-title.md` 命名，编号与全书目录一致。
 - 图片集中存放在 [figures/](figures/)，正文使用相对路径引用。
 
-## 构建 HTML
+## 构建 HTML 与 EPUB
 
-需要 [mdBook](https://rust-lang.github.io/mdBook/) 和 [mdbook-katex](https://github.com/lzanini/mdbook-katex)：
+需要 [mdBook](https://rust-lang.github.io/mdBook/)、[mdbook-katex](https://github.com/lzanini/mdbook-katex) 和 [mdbook-epub](https://github.com/Michael-F-Bryan/mdbook-epub)：
 
 ```bash
 brew install mdbook
 cargo install mdbook-katex
+cargo install mdbook-epub
 ```
 
 ```bash
@@ -86,7 +89,12 @@ cargo install mdbook-katex
 open .build/html/index.html
 ```
 
-脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX），产物在 `.build/html/`。KaTeX 的样式和字体放在 `theme/katex/`，构建时一并复制，不依赖 CDN。`.build/` 不入库；正文改动后重跑脚本。
+脚本把 `book/`、`figures/` 和 `SUMMARY.md` 复制到 `.build/src/`，去掉章节的 YAML front matter，再由 mdbook-katex 在 Markdown 解析前把公式渲染成 HTML（KaTeX）。产物有两个：
+
+- `.build/html/`：网页版，KaTeX 的样式和字体放在 `theme/katex/`，不依赖 CDN；
+- `.build/llm-systems-optimization.epub`：电子书版，公式用 MathML 渲染，适配不加载 KaTeX 资源的阅读器。
+
+`.build/` 不入库；正文改动后重跑脚本。
 
 构建后可以检查公式：
 
