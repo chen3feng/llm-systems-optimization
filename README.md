@@ -4,6 +4,8 @@
 
 一本约 800 页、以 C++/CUDA 为主要实践语言、以 LLM 底层系统为核心的技术专著。
 
+在线阅读：<https://blog.chen3feng.top/llm-systems-optimization/>
+
 > 当前状态：初稿完成。Part I–Part X 共 50 章、前言与附录 A–I 均已完成初稿，待统一审校。
 
 ## 这本书回答什么问题
