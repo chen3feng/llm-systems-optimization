@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>封面方案对比</title>
+<style>
+  :root { color-scheme: light; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 48px 40px 64px;
+    background: #ece9e2; color: #1d1a16;
+    font-family: "PingFang SC", "Helvetica Neue", Arial, sans-serif;
+  }
+  header { max-width: 1560px; margin: 0 auto 36px; }
+  h1 { margin: 0 0 8px; font-size: 26px; letter-spacing: .02em; }
+  p { margin: 0; color: #6c6459; font-size: 14px; line-height: 1.7; }
+  .grid {
+    max-width: 1560px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
+  }
+  .card { background: #faf8f2; border-radius: 6px; padding: 14px 14px 18px;
+          box-shadow: 0 2px 10px rgba(60, 50, 30, .10); }
+  .card img { display: block; width: 100%; height: auto; border-radius: 3px; }
+  .label { margin-top: 14px; display: flex; align-items: baseline; gap: 10px; }
+  .num { font: 600 13px/1 "SF Mono", Menlo, monospace; color: #b0a695; }
+  .name { font-size: 17px; font-weight: 600; }
+  .desc { margin-top: 7px; color: #6c6459; font-size: 13px; line-height: 1.6; }
+</style>
+<header>
+  <h1>封面方案 · 4 选 1</h1>
+  <p>1200 × 1800（2:3），已按 2 倍分辨率渲染。中英文标题、副标题与作者信息均已排入。</p>
+</header>
+<div class="grid">
+  <div class="card">
+    <img src="01-roofline.png" alt="方案 01 Roofline">
+    <div class="label"><span class="num">01</span><span class="name">Roofline</span></div>
+    <div class="desc">深色技术风。用 roofline 模型做视觉主线，直接对应书里的性能建模方法。</div>
+  </div>
+  <div class="card">
+    <img src="02-sm-grid.png" alt="方案 02 SM Grid">
+    <div class="label"><span class="num">02</span><span class="name">SM Grid</span></div>
+    <div class="desc">深色 + SM 网格与高亮单元，强调 GPU、调度和资源利用。</div>
+  </div>
+  <div class="card">
+    <img src="03-layers.png" alt="方案 03 Layers">
+    <div class="label"><span class="num">03</span><span class="name">Layers</span></div>
+    <div class="desc">浅色编辑风。四层结构从模型、算子、运行时到分布式，气质更像正式出版物。</div>
+  </div>
+  <div class="card">
+    <img src="04-swiss.png" alt="方案 04 Swiss">
+    <div class="label"><span class="num">04</span><span class="name">Swiss</span></div>
+    <div class="desc">极简排版。超大字标题 + 竖排中文，留白最多，最克制。</div>
+  </div>
+</div>
+</html>

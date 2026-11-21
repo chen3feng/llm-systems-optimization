@@ -10,7 +10,8 @@
     .build/llm-systems-optimization-kindle.pdf   6 寸 Kindle 大字版（91mm × 122mm）
 
 print.html 是 mdBook 自动生成的整本合并页，已包含全部章节、插图和 KaTeX
-公式。脚本向其中注入打印样式后交给 Chrome 渲染，不依赖网络。
+公式。脚本向其中注入打印样式后交给 Chrome 渲染，不依赖网络。封面由
+assets/cover/cover.png 单独打印成一页，再用 poppler 的 pdfunite 合并到正文前。
 """
 import html as html_lib
 import pathlib
@@ -25,6 +26,7 @@ REPO = pathlib.Path(__file__).resolve().parent.parent
 BUILD = REPO / '.build'
 HTML_DIR = BUILD / 'html'
 PRINT_HTML = HTML_DIR / 'print.html'
+COVER_IMAGE = REPO / 'assets' / 'cover' / 'cover.png'
 
 CHROME_CANDIDATES = [
     '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
@@ -38,7 +40,7 @@ CHROME_CANDIDATES = [
 ]
 
 COMMON_CSS = """
-html, body { background: #fff !important; }
+html, body { background: transparent !important; }
 body {
     font-family: "PingFang SC", "Hiragino Sans GB", "Noto Sans CJK SC",
                  "Source Han Sans SC", "Microsoft YaHei", sans-serif;
@@ -73,6 +75,19 @@ body {
 }
 a { color: #1a5fb4; text-decoration: none; }
 """
+
+# 封面单独打印成一页，再与正文 PDF 合并。Chrome 的命名页（@page cover）
+# 会留下约 2mm 白边，所以封面页直接用整页画布背景绘制。
+COVER_HTML = """<!doctype html><meta charset="utf-8"><style>
+@page {{ size: {width}mm {height}mm; margin: 0; }}
+html, body {{
+    margin: 0;
+    padding: 0;
+    width: {width}mm;
+    height: {height}mm;
+    background: #faf8f2 url("{uri}") center / contain no-repeat;
+}}
+</style>"""
 
 A4_CSS = """
 @page { size: A4; margin: 20mm 18mm; }
@@ -179,6 +194,33 @@ def print_pdf(chrome, src, out, profile):
         raise SystemExit(f'Chrome 打印失败：{out}')
 
 
+def print_cover(chrome, out, width_mm, height_mm, profile, tmp):
+    """打印一页整页出血的封面。"""
+    if not COVER_IMAGE.exists():
+        raise SystemExit(f'找不到封面：{COVER_IMAGE.relative_to(REPO)}')
+    src = tmp / f'cover-{width_mm}x{height_mm}.html'
+    src.write_text(
+        COVER_HTML.format(width=width_mm, height=height_mm,
+                          uri=COVER_IMAGE.as_uri()),
+        encoding='utf-8')
+    print_pdf(chrome, src, out, profile)
+
+
+def merge_pdfs(cover, content, out):
+    """用 poppler 的 pdfunite 把封面页拼到正文前面。"""
+    pdfunite = shutil.which('pdfunite')
+    if not pdfunite:
+        raise SystemExit('找不到 pdfunite（poppler-utils），'
+                         '请先安装：brew install poppler 或 apt-get install poppler-utils')
+    result = subprocess.run(
+        [pdfunite, str(cover), str(content), str(out)],
+        capture_output=True, text=True, check=False)
+    if result.returncode != 0 or not out.exists() or out.stat().st_size == 0:
+        sys.stderr.write(result.stdout)
+        sys.stderr.write(result.stderr)
+        raise SystemExit(f'合并 PDF 失败：{out}')
+
+
 def main():
     """生成 A4 普通版和 6 寸 Kindle 大字版两个 PDF。"""
     if not PRINT_HTML.exists():
@@ -188,19 +230,24 @@ def main():
         raise SystemExit('找不到 Chrome/Chromium，请先安装 Google Chrome')
 
     jobs = [
-        ('A4 普通版', A4_CSS, BUILD / 'llm-systems-optimization.pdf', False),
-        ('6 寸 Kindle 大字版', KINDLE_CSS,
+        ('A4 普通版', A4_CSS, (210, 297),
+         BUILD / 'llm-systems-optimization.pdf', False),
+        ('6 寸 Kindle 大字版', KINDLE_CSS, (91, 122),
          BUILD / 'llm-systems-optimization-kindle.pdf', True),
     ]
 
     with tempfile.TemporaryDirectory(prefix='llm-book-pdf-') as tmp:
         tmp = pathlib.Path(tmp)
         profile = tmp / 'chrome-profile'
-        for label, css, out, fit_text in jobs:
+        for label, css, (cover_w, cover_h), out, fit_text in jobs:
             src = tmp / (out.stem + '.html')
+            content_pdf = tmp / (out.stem + '-content.pdf')
+            cover_pdf = tmp / (out.stem + '-cover.pdf')
             write_print_html(src, css, fit_text_blocks=fit_text)
             print(f'打印{label}：{out.name}')
-            print_pdf(chrome, src, out, profile)
+            print_pdf(chrome, src, content_pdf, profile)
+            print_cover(chrome, cover_pdf, cover_w, cover_h, profile, tmp)
+            merge_pdfs(cover_pdf, content_pdf, out)
             print(f'  {out}')
     return 0
 

@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<title>Cover 04b — Swiss + Tagline</title>
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 1800px; overflow: hidden; }
+  body {
+    background: #faf8f2;
+    color: #141210;
+    font-family: "Helvetica Neue", Arial, "PingFang SC", sans-serif;
+  }
+  .content { position: absolute; inset: 96px 104px 88px; display: flex; flex-direction: column; }
+  .top {
+    display: flex; justify-content: space-between;
+    font: 500 16px/1 "SF Mono", Menlo, monospace;
+    letter-spacing: .28em; color: #6f675c; text-transform: uppercase;
+  }
+  .rule { height: 1px; background: #141210; margin-top: 26px; }
+  .title { margin-top: 74px; font-weight: 800; letter-spacing: -.045em; }
+  .title .l1 { font-size: 306px; line-height: .76; }
+  .title .l2 { font-size: 86px; line-height: 1.1; letter-spacing: -.02em; }
+  .title .accent { color: #e6532f; }
+  .zh {
+    position: absolute; top: 300px; right: 0;
+    writing-mode: vertical-rl;
+    font-family: "PingFang SC", sans-serif;
+    font-size: 58px; font-weight: 500; letter-spacing: .18em; color: #141210;
+  }
+  .tagline { position: absolute; left: 0; top: 636px; width: 660px; }
+  .tag-rule { width: 96px; height: 4px; background: #e6532f; }
+  .tag-cn {
+    margin-top: 30px; font-family: "Songti SC", "STSong", serif;
+    font-size: 44px; letter-spacing: .08em; color: #1d1a16;
+  }
+  .tag-en {
+    margin-top: 16px; font: 500 15px/1.5 "SF Mono", Menlo, monospace;
+    letter-spacing: .18em; color: #6f675c;
+  }
+  .dots {
+    position: absolute; right: 2px; bottom: 330px; width: 218px; height: 218px;
+    background-image: radial-gradient(circle, rgba(20, 18, 16, .28) 2.2px, transparent 2.7px);
+    background-size: 24px 24px;
+  }
+  .dots i { position: absolute; width: 11px; height: 11px; border-radius: 50%; background: #e6532f; }
+  .dots .d1 { left: 70px; top: 46px; }
+  .dots .d2 { left: 142px; top: 118px; }
+  .dots .d3 { left: 22px; top: 166px; }
+  .bottom { margin-top: auto; }
+  .cn-sub {
+    font-family: "Songti SC", "STSong", serif;
+    font-size: 26px; letter-spacing: .14em; color: #3f3a33;
+  }
+  .en-sub {
+    margin-top: 14px; max-width: 900px;
+    font: 400 17px/1.6 "SF Mono", Menlo, monospace;
+    letter-spacing: .12em; color: #6f675c; text-transform: uppercase;
+  }
+  .foot {
+    margin-top: 46px; padding-top: 22px; border-top: 1px solid rgba(20, 18, 16, .35);
+    display: flex; justify-content: space-between; align-items: flex-end;
+    font: 400 17px/1.4 "SF Mono", Menlo, monospace; color: #6f675c; letter-spacing: .1em;
+  }
+  .foot .author { font-size: 26px; color: #141210; letter-spacing: .02em; }
+</style>
+<div class="content">
+  <div class="top">
+    <div>A Systems Book</div>
+    <div>2026</div>
+  </div>
+  <div class="rule"></div>
+
+  <div class="title">
+    <div class="l1">LLM</div>
+    <div class="l2">SYSTEMS</div>
+    <div class="l2"><span class="accent">OPTIMIZATION</span></div>
+  </div>
+
+  <div class="zh">LLM 系统优化</div>
+
+  <div class="tagline">
+    <div class="tag-rule"></div>
+    <div class="tag-cn">先算清瓶颈，再优化。</div>
+    <div class="tag-en">MEASURE THE BOUND. THEN OPTIMIZE.</div>
+  </div>
+
+  <div class="dots"><i class="d1"></i><i class="d2"></i><i class="d3"></i></div>
+
+  <div class="bottom">
+    <div class="cn-sub">算法 · GPU Kernel · 运行时 · 分布式执行</div>
+    <div class="en-sub">Algorithms · GPU Kernels · Runtime · Distributed Execution</div>
+    <div class="foot">
+      <div class="author">chen3feng</div>
+      <div style="font-size: 13px; letter-spacing: .04em;">github.com/chen3feng/llm-systems-optimization</div>
+    </div>
+  </div>
+</div>
+</html>
